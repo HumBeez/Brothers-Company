@@ -12,7 +12,8 @@ namespace BrothersCompany.Activities.Test
         {
             var response = new TestResponse();
 
-            response.Result = "This is working fine";
+            var peace = "Peace Out";
+            response.Result = "This is working fine :"+ peace;
 
             return response;
         }
