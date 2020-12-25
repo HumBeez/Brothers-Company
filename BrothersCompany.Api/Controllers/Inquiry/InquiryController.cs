@@ -17,13 +17,16 @@ namespace BrothersCompany.Api.Controllers.Inquiry
         private readonly IActivity<GetInquiryDetailsDomainRequest, GetInquiryDetailsDomainResponse> _getInquiryDetailsActivity;
 
         private readonly BaseMapper<SaveInquiryDetailsRequest, SaveInquiryDetailsDomainRequest> _saveInquiryDetailsContractToDomainMapper;
+        private readonly BaseMapper<GetInquiryDetailsDomainResponse, GetInquiryDetailsResponse> _getInquiryDetailsDomainToContractMapper;
         public InquiryController(IActivity<SaveInquiryDetailsDomainRequest, SaveInquiryDetailsDomainResponse> saveInquiryDetailsActivity,
             IActivity<GetInquiryDetailsDomainRequest, GetInquiryDetailsDomainResponse> getInquiryDetailsActivity,
-            BaseMapper<SaveInquiryDetailsRequest, SaveInquiryDetailsDomainRequest> saveInquiryDetailsContractToDomainMapper)
+            BaseMapper<SaveInquiryDetailsRequest, SaveInquiryDetailsDomainRequest> saveInquiryDetailsContractToDomainMapper,
+            BaseMapper<GetInquiryDetailsDomainResponse, GetInquiryDetailsResponse> getInquiryDetailsDomainToContractMapper)
         {
             _saveInquiryDetailsActivity = saveInquiryDetailsActivity;
             _getInquiryDetailsActivity = getInquiryDetailsActivity;
             _saveInquiryDetailsContractToDomainMapper = saveInquiryDetailsContractToDomainMapper;
+            _getInquiryDetailsDomainToContractMapper = getInquiryDetailsDomainToContractMapper;
 
         }
         [HttpPost]
@@ -36,7 +39,7 @@ namespace BrothersCompany.Api.Controllers.Inquiry
 
             _saveInquiryDetailsContractToDomainMapper.Map(request,saveInquiryDetailsDomainRequest);
             saveInquiryDetailsDomainResponse = _saveInquiryDetailsActivity.Execute(saveInquiryDetailsDomainRequest);
-            saveInquiryDetailsDomainResponse.IsInquirySaved = response.IsInquirySaved;
+            response.IsInquirySaved = saveInquiryDetailsDomainResponse.IsInquirySaved;
             return response;
         }
 
@@ -50,7 +53,7 @@ namespace BrothersCompany.Api.Controllers.Inquiry
 
 
             getInquiryDetailsDomainResponse = _getInquiryDetailsActivity.Execute(getInquiryDetailsDomainRequest);
-
+            _getInquiryDetailsDomainToContractMapper.Map(getInquiryDetailsDomainResponse, response);
             return response;
         }
 

@@ -12,7 +12,7 @@ namespace BrothersCompany.DomainCore.Helpers
     {
         public IDbConnection GetDbConnection()
         {
-            string BcDbConnectionString = ConfigurationManager.ConnectionStrings[""].ToString();
+            string BcDbConnectionString = ConfigurationManager.ConnectionStrings["DbConnectionString"].ToString();
             SqlConnection BcDbconnection = new SqlConnection(BcDbConnectionString);
             return BcDbconnection;
         }
